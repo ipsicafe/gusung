@@ -1,0 +1,229 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>구역별 추진 현황 모션</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Black+Han+Sans&display=swap">
+<style>
+/* Layout: 1280×720 고정 무대를 화면 폭에 맞춰 축소, 4개 장면이 순서대로 전환되는 모션그래픽 (다크 단일 테마) */
+:root{
+  --bg:#0d1b2a; --panel:#13263a; --track:#203851; --line:#2b4866;
+  --fg:#eef3f8; --muted:#8fa6bd;
+  --s1:#4f8fd6; --s2:#38b2ac; --s3:#7cc576; --s4:#f2b84b;
+  --display:"Black Han Sans","Noto Sans KR",sans-serif;
+  --body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.frame{position:relative;width:100%;overflow:hidden;border-radius:10px;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;
+  background:radial-gradient(1200px 600px at 85% -10%,#183554 0%,transparent 60%),var(--bg);overflow:hidden}
+.scene{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.scene.show{opacity:1}
+.brand{position:absolute;left:56px;top:38px;font-size:18px;letter-spacing:.08em;color:var(--fg);font-weight:700;display:flex;align-items:center;gap:10px}
+.brand::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--s4)}
+.date{position:absolute;right:56px;top:40px;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* S1 */
+#s1 .t{position:absolute;left:56px;top:230px}
+#s1 .kick{font-size:22px;color:var(--s4);font-weight:700;letter-spacing:.06em;transform:translateY(20px);opacity:0;transition:all .7s .2s}
+#s1 h1{font-family:var(--display);font-weight:400;font-size:104px;line-height:1.08;margin:14px 0 0;transform:translateY(30px);opacity:0;transition:all .8s .4s}
+#s1 .sub{font-size:24px;color:var(--muted);margin-top:22px;transform:translateY(20px);opacity:0;transition:all .7s .8s}
+#s1.show .kick,#s1.show h1,#s1.show .sub{transform:none;opacity:1}
+#s1 .steps{position:absolute;left:56px;bottom:70px;display:flex;gap:10px;align-items:center}
+.chip{font-size:17px;padding:8px 16px;border-radius:999px;border:1px solid var(--line);color:var(--fg);opacity:0;transform:translateX(-10px);transition:all .5s}
+#s1.show .chip{opacity:1;transform:none}
+.arrow{color:var(--muted);font-size:18px;opacity:0;transition:opacity .5s}
+#s1.show .arrow{opacity:1}
+
+/* S2 funnel */
+#s2 h2,#s3 h2{position:absolute;left:56px;top:84px;margin:0;font-family:var(--display);font-weight:400;font-size:46px}
+#s2 .rows{position:absolute;left:56px;right:56px;top:190px;display:flex;flex-direction:column;gap:26px}
+.row{display:grid;grid-template-columns:220px 1fr 150px;align-items:center;gap:22px;opacity:0;transform:translateY(16px);transition:all .6s}
+#s2.show .row{opacity:1;transform:none}
+.row .lab{font-size:24px;font-weight:700}
+.row .lab small{display:block;font-size:15px;font-weight:400;color:var(--muted);margin-top:2px}
+.bar{height:44px;background:var(--track);border-radius:6px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:6px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.bar b{position:absolute;top:0;bottom:0;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);
+  background:repeating-linear-gradient(135deg,var(--s2) 0 6px,transparent 6px 12px);opacity:.7}
+.row .num{font-family:var(--display);font-size:52px;text-align:right;font-variant-numeric:tabular-nums;line-height:1}
+.row .num em{font-style:normal;font-family:var(--body);font-size:18px;color:var(--muted);margin-left:4px}
+#s2 .foot{position:absolute;left:56px;bottom:46px;font-size:17px;color:var(--muted)}
+
+/* S3 grid */
+#s3 .legend{position:absolute;right:56px;top:100px;display:flex;gap:18px;font-size:15px;color:var(--muted)}
+#s3 .legend span{display:flex;align-items:center;gap:7px}
+#s3 .legend span::before{content:"";width:14px;height:14px;border-radius:3px;background:var(--c)}
+.grid{position:absolute;left:56px;right:56px;top:160px;display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px 14px;height:128px;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:8px;opacity:0;transform:scale(.92);transition:opacity .45s,transform .45s,filter .6s,box-shadow .6s,border-color .6s}
+.card.on{opacity:1;transform:none}
+.card .top{display:flex;justify-content:space-between;align-items:baseline}
+.card .no{font-family:var(--display);font-size:34px;line-height:1}
+.card .no small{font-family:var(--body);font-size:15px;font-weight:500;margin-left:2px;color:var(--muted)}
+.badge{font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:4px;background:#2a3f57;color:var(--muted);white-space:nowrap}
+.badge.lead{background:rgba(242,184,75,.16);color:var(--s4)}
+.segs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:auto}
+.seg{height:10px;background:var(--track);border-radius:3px;overflow:hidden;position:relative}
+.seg i{position:absolute;inset:0 auto 0 0;width:0;background:var(--c);transition:width .45s ease var(--d,0s)}
+.seg.half i{background:repeating-linear-gradient(135deg,var(--c) 0 4px,transparent 4px 8px)}
+.card.on .seg.f i{width:100%}
+.st{font-size:15px;font-weight:500;color:var(--muted);min-height:22px}
+.card.on .st{color:var(--fg)}
+.card.empty .st{color:#5f7690}
+.stage.focus .card{filter:saturate(.2) brightness(.55)}
+.stage.focus .card.win{filter:none;border-color:var(--s4);box-shadow:0 0 0 2px var(--s4),0 0 24px rgba(242,184,75,.3)}
+#s3 .callout{position:absolute;left:56px;bottom:34px;display:flex;align-items:center;gap:16px;opacity:0;transform:translateY(14px);transition:all .6s}
+.stage.focus #s3 .callout{opacity:1;transform:none}
+#s3 .callout b{font-family:var(--display);font-weight:400;font-size:40px;color:var(--s4)}
+#s3 .callout span{font-size:20px;color:var(--fg)}
+
+.prog{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--s4);opacity:.8}
+.ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ctrl button{font:inherit;font-size:15px;font-weight:700;padding:9px 18px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.ctrl button:hover{border-color:var(--s4)}
+.ctrl button:focus-visible{outline:2px solid var(--s4);outline-offset:2px}
+.ctrl .hint{color:var(--muted);font-size:14px}
+</style>
+
+<div class="wrap">
+  <div class="frame" id="frame">
+    <div class="stage" id="stage">
+      <div class="brand">둔산 통합재건축 연합회</div>
+      <div class="date">2026. 11. 10 기준</div>
+
+      <section class="scene" id="s1">
+        <div class="t">
+          <div class="kick">둔산 17개 구역 한눈에 보기</div>
+          <h1>구역별 재건축<br>추진 현황</h1>
+          <div class="sub">선도지구 참여부터 주민대표단 구성승인까지</div>
+        </div>
+        <div class="steps">
+          <span class="chip" style="transition-delay:1.1s">주민대표단 구성</span><span class="arrow" style="transition-delay:1.25s">→</span>
+          <span class="chip" style="transition-delay:1.35s">연번부여 신청</span><span class="arrow" style="transition-delay:1.5s">→</span>
+          <span class="chip" style="transition-delay:1.6s">구성승인 신청</span><span class="arrow" style="transition-delay:1.75s">→</span>
+          <span class="chip" style="transition-delay:1.85s;border-color:var(--s4);color:var(--s4)">구성승인</span>
+        </div>
+      </section>
+
+      <section class="scene" id="s2">
+        <h2>단계별 진행 구역 수</h2>
+        <div class="rows" id="rows"></div>
+        <div class="foot">전체 17개 구역 기준 · 빗금은 신청 진행 중 (17구역 연번부여 신청)</div>
+      </section>
+
+      <section class="scene" id="s3">
+        <h2 id="s3title">구역별 진행 단계</h2>
+        <div class="legend">
+          <span style="--c:var(--s1)">대표단 구성</span>
+          <span style="--c:var(--s2)">연번부여</span>
+          <span style="--c:var(--s3)">구성승인 신청</span>
+          <span style="--c:var(--s4)">구성승인</span>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="callout"><b>4개 구역</b><span>1 · 9 · 13 · 14구역 주민대표단 구성승인 완료</span></div>
+      </section>
+
+      <div class="prog" id="prog"></div>
+    </div>
+  </div>
+  <div class="ctrl">
+    <button id="replay" type="button">처음부터 재생</button>
+    <button id="pause" type="button">일시정지</button>
+    <span class="hint">약 26초 · 자동 반복 재생 · 화면 녹화로 영상 저장 가능</span>
+  </div>
+</div>
+
+<script>
+// 0:미참여 1:1차참여 선도지구 2:선도지구 / step: 구성(1) 연번(2) 승인신청(3) 승인(4), half=연번 신청중
+const Z=[
+ {n:1,lead:1,s:4},{n:2,lead:0,s:0},{n:3,lead:0,s:0},{n:4,lead:0,s:0},{n:5,lead:0,s:0},{n:6,lead:0,s:0},
+ {n:7,lead:1,s:2},{n:8,lead:1,s:0},{n:9,lead:1,s:4},{n:10,lead:0,s:1},{n:11,lead:1,s:3},{n:12,lead:0,s:0},
+ {n:13,lead:2,s:4},{n:14,lead:2,s:4},{n:15,lead:1,s:3},{n:16,lead:0,s:0},{n:17,lead:1,s:1,half:1}
+];
+const STATUS=["추진 전","대표단 구성","연번부여 완료","구성승인 신청","구성승인 완료"];
+const COLORS=["var(--s1)","var(--s2)","var(--s3)","var(--s4)"];
+
+const ROWS=[
+ {lab:"선도지구 참여",sub:"1차 참여 7 · 선도지구 2",v:9,c:"var(--s4)",o:.55},
+ {lab:"주민대표단 구성",sub:"",v:9,c:"var(--s1)"},
+ {lab:"연번부여 신청서",sub:"완료 7 · 신청 1",v:7,half:1,c:"var(--s2)"},
+ {lab:"구성승인 신청",sub:"완료",v:6,c:"var(--s3)"},
+ {lab:"주민대표단 구성승인",sub:"승인",v:4,c:"var(--s4)"}
+];
+const rowsEl=document.getElementById('rows');
+ROWS.forEach((r,i)=>{
+  rowsEl.insertAdjacentHTML('beforeend',`<div class="row" style="transition-delay:${.15*i}s">
+   <div class="lab">${r.lab}${r.sub?`<small>${r.sub}</small>`:''}</div>
+   <div class="bar"><i style="background:${r.c};opacity:${r.o||1};transition-delay:${.4+.2*i}s" data-w="${r.v/17*100}"></i>${r.half?`<b style="left:${r.v/17*100}%;transition-delay:${1.4+.2*i}s" data-w="${100/17}"></b>`:''}</div>
+   <div class="num"><span data-v="${r.v}" data-delay="${400+200*i}">0</span><em>/17</em></div></div>`);
+});
+
+const grid=document.getElementById('grid');
+Z.forEach((z,i)=>{
+  const b=z.lead===1?'<span class="badge lead">1차 선도지구</span>':z.lead===2?'<span class="badge lead">선도지구</span>':'<span class="badge">—</span>';
+  let segs='';
+  for(let k=0;k<4;k++){
+    const full=k<z.s, half=z.half&&k===z.s;
+    segs+=`<div class="seg ${full||half?'f':''} ${half?'half':''}" style="--c:${COLORS[k]};--d:${(.25+k*.22).toFixed(2)}s"><i></i></div>`;
+  }
+  const st=z.half?"연번부여 신청 중":STATUS[z.s];
+  grid.insertAdjacentHTML('beforeend',`<div class="card ${z.s===0?'empty':''} ${z.s===4?'win':''}" style="transition-delay:${(i*.12).toFixed(2)}s, ${(i*.12).toFixed(2)}s, 0s, 0s, 0s">
+    <div class="top"><span class="no">${z.n}<small>구역</small></span>${b}</div>
+    <div class="st">${st}</div><div class="segs">${segs}</div></div>`);
+});
+// 세그먼트 지연 = 카드 등장 지연 + 단계 지연
+document.querySelectorAll('.card').forEach((c,i)=>c.querySelectorAll('.seg').forEach(s=>{
+  s.style.setProperty('--d',(i*.12+parseFloat(s.style.getPropertyValue('--d'))).toFixed(2)+'s');
+}));
+
+// 무대 크기 맞춤
+const frame=document.getElementById('frame'),stage=document.getElementById('stage');
+function fit(){const s=frame.clientWidth/1280;stage.style.transform=`scale(${s})`;frame.style.height=(720*s)+'px';}
+addEventListener('resize',fit);fit();
+
+// 타임라인
+const T=[{at:0,fn:()=>show('s1')},{at:3600,fn:()=>{show('s2');grow()}},{at:11000,fn:()=>{show('s3');cards()}},{at:19500,fn:()=>stage.classList.add('focus')}];
+const TOTAL=26000;
+let timers=[],paused=false,start=0,elapsed=0,raf;
+const prog=document.getElementById('prog');
+function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('show',s.id===id));}
+function grow(){
+  document.querySelectorAll('.bar i,.bar b').forEach(e=>e.style.width=e.dataset.w+'%');
+  document.querySelectorAll('.num span').forEach(e=>{
+    const v=+e.dataset.v;setT(()=>{let t0=performance.now();(function tick(t){const p=Math.min(1,(t-t0)/1100);e.textContent=Math.round(v*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick)})(t0)},+e.dataset.delay);
+  });
+}
+function cards(){document.querySelectorAll('.card').forEach(c=>c.classList.add('on'));}
+function resetAll(){
+  timers.forEach(clearTimeout);timers=[];
+  stage.classList.remove('focus');
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('.bar i,.bar b').forEach(e=>e.style.width=0);
+  document.querySelectorAll('.num span').forEach(e=>e.textContent=0);
+  show(null);
+}
+function setT(fn,ms){timers.push(setTimeout(fn,ms));}
+function play(){
+  resetAll();paused=false;pauseBtn.textContent='일시정지';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    T.forEach(s=>setT(s.fn,s.at));setT(play,TOTAL);
+    start=performance.now();cancelAnimationFrame(raf);
+    (function p(t){prog.style.width=Math.min(100,(t-start)/TOTAL*100)+'%';raf=requestAnimationFrame(p)})(start);
+  }));
+}
+function finalState(){resetAll();show('s3');grow();cards();stage.classList.add('focus');prog.style.width='100%';}
+const pauseBtn=document.getElementById('pause');
+document.getElementById('replay').onclick=play;
+pauseBtn.onclick=()=>{
+  if(!paused){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(raf);elapsed=performance.now()-start;paused=true;pauseBtn.textContent='이어서 재생';
+    document.querySelectorAll('.stage *').forEach(e=>e.style.transitionDuration='0s');}
+  else{document.querySelectorAll('.stage *').forEach(e=>e.style.transitionDuration='');paused=false;pauseBtn.textContent='일시정지';
+    T.filter(s=>s.at>elapsed).forEach(s=>setT(s.fn,s.at-elapsed));setT(play,TOTAL-elapsed);
+    start=performance.now()-elapsed;(function p(t){prog.style.width=Math.min(100,(t-start)/TOTAL*100)+'%';raf=requestAnimationFrame(p)})(start);}
+};
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){finalState();}else{show('s1');play();}
+</script>
+
+</body></html>
